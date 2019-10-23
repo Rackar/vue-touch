@@ -1,53 +1,56 @@
 <template>
-    <div id="app">
-        <div class="box" 
-            v-tap="(e)=>vueTouch('点击',e)" 
-            v-longtap="(e)=>vueTouch('长按',e)" 
-            v-swipeleft="(e)=>vueTouch('左滑',e)"
-            v-swiperight="(e)=>vueTouch('右滑',e)"
-            v-swipeup="(e)=>vueTouch('上滑',e)"
-            v-swipedown="(e)=>vueTouch('下滑',e)"
-        >
-            {{ name }}
-        </div>
-    </div>
+  <div id="app">
+    <div class="box" v-touchall="touchOption">{{ text }}</div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'App',
-    data () {
-        return {
-            name:'touch',
-        }
-    },
-	methods:{
-	  	vueTouch:function(txt,e){
-            this.name = txt;
-	  	}
-	}
-}
+  name: "App",
+  data() {
+    return {
+      text: "touch",
+      touchOption: {
+        tap: e => this.vueTouch("点击", e),
+        longtap: e => this.vueTouch("长按", e),
+        swipeleft: e => this.vueTouch("左滑", e),
+        swiperight: e => this.vueTouch("右滑", e),
+        swipeup: e => this.vueTouch("上滑", e),
+        swipedown: e => this.vueTouch("下滑", e),
+
+        longtapDelay: 500
+      }
+    };
+  },
+  methods: {
+    vueTouch: function(txt, e) {
+      this.text = txt;
+    }
+  }
+};
 </script>
 
 <style>
-html,body{
-    width: 100%;
-    height: 100%;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 #app {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.box{
-	width: 300px;
-	height: 300px;
-	background-color: red;
-	color: #FFFFFF;
-	text-align: center;
-	line-height: 300px;
-	font-size: 100px;
+.box {
+  width: 300px;
+  height: 300px;
+  background-color: red;
+  color: #ffffff;
+  text-align: center;
+  line-height: 300px;
+  font-size: 100px;
 }
 </style>
