@@ -1,13 +1,18 @@
 function vueTouch(el, binding) {
   this.activeMetheds = binding.value
   this.delay = binding.value.longtapDelay ? binding.value.longtapDelay : 1000
+  this.doubleDelay = binding.value.doubletapDelay
+    ? binding.value.doubletapDelay
+    : 300
+
   this.obj = el
   this.binding = binding
   this.vueTouches = { x: 0, y: 0 }
 
   this.ifTouchStandby = true
   this.callbacks = {}
-
+  this.lastClickTime = null
+  this.timeOneClick = null
   this.obj.addEventListener(
     'touchstart',
     e => {
@@ -48,6 +53,8 @@ vueTouch.prototype = {
     var disY = e.changedTouches[0].pageY - this.vueTouches.y
     if (this.time) clearTimeout(this.time)
     if (this.ifTouchStandby) {
+      if (this.activeMetheds.doubletap) {
+      }
       if (Math.abs(disX) > 10 || Math.abs(disY) > 10) {
         if (Math.abs(disX) > Math.abs(disY)) {
           if (disX > 10 && this.activeMetheds.swiperight) {
@@ -65,7 +72,36 @@ vueTouch.prototype = {
           }
         }
       } else if (this.activeMetheds.tap) {
-        this.activeMetheds.tap()
+        if (!this.activeMetheds.doubletap) {
+          this.activeMetheds.tap()
+        } else {
+          if (!this.timeOneClick) {
+            this.timeOneClick = setTimeout(
+              function() {
+                this.activeMetheds.tap()
+              }.bind(this),
+              this.doubleDelay
+            )
+          }
+
+          if (this.lastClickTime) {
+            let twice = Date.now()
+            if (twice - this.lastClickTime < this.doubleDelay) {
+              this.activeMetheds.doubletap()
+              if (this.timeOneClick) clearTimeout(this.timeOneClick)
+            } else {
+              this.lastClickTime = Date.now()
+              this.timeOneClick = setTimeout(
+                function() {
+                  this.activeMetheds.tap()
+                }.bind(this),
+                this.doubleDelay
+              )
+            }
+          } else {
+            this.lastClickTime = Date.now()
+          }
+        }
       }
     }
   }

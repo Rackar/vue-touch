@@ -12,13 +12,14 @@ export default {
       text: "touch",
       touchOption: {
         tap: e => this.vueTouch("点击", e),
+        doubletap: e => this.vueTouch("双击", e),
         longtap: e => this.vueTouch("长按", e),
         swipeleft: e => this.vueTouch("左滑", e),
         swiperight: e => this.vueTouch("右滑", e),
         swipeup: e => this.vueTouch("上滑", e),
         swipedown: e => this.vueTouch("下滑", e),
-
-        longtapDelay: 500
+        doubletapDelay: 300,
+        longtapDelay: 600
       }
     };
   },
